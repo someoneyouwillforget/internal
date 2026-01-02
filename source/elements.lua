@@ -4,7 +4,7 @@ local UserInputService = game:GetService("UserInputService")
 
 function Elements.CreateButton(TabPage, BData, Theme)
     local Button = Instance.new("TextButton", TabPage)
-    Button.Size = UDim2.new(1, -10, 0, 36) -- Added margin
+    Button.Size = UDim2.new(1, -10, 0, 36)
     Button.BackgroundColor3 = Theme.ElementColor
     Button.Text = BData.Name
     Button.TextColor3 = Theme.TextColor
@@ -20,33 +20,25 @@ end
 
 function Elements.CreateToggle(TabPage, TData, Theme)
     local ToggleFrame = Instance.new("Frame", TabPage)
-    ToggleFrame.Size = UDim2.new(1, -10, 0, 38) -- Added margin
+    ToggleFrame.Size = UDim2.new(1, -10, 0, 38)
     ToggleFrame.BackgroundColor3 = Theme.ElementColor
     Instance.new("UICorner", ToggleFrame).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", ToggleFrame)
     s.Color = Theme.BorderColor; s.Thickness = 1.5
 
     local ToggleBtn = Instance.new("TextButton", ToggleFrame)
-    ToggleBtn.Size = UDim2.new(1, 0, 1, 0)
-    ToggleBtn.BackgroundTransparency = 1
-    ToggleBtn.Text = "  " .. TData.Name
-    ToggleBtn.TextXAlignment = "Left"
-    ToggleBtn.TextColor3 = Theme.TextColor
-    ToggleBtn.Font = Enum.Font.SourceSansBold
-    ToggleBtn.TextSize = 14
+    ToggleBtn.Size = UDim2.new(1, 0, 1, 0); ToggleBtn.BackgroundTransparency = 1
+    ToggleBtn.Text = "  " .. TData.Name; ToggleBtn.TextXAlignment = "Left"
+    ToggleBtn.TextColor3 = Theme.TextColor; ToggleBtn.Font = Enum.Font.SourceSansBold; ToggleBtn.TextSize = 14
 
     local SwitchBar = Instance.new("Frame", ToggleFrame)
-    SwitchBar.Size = UDim2.new(0, 34, 0, 18)
-    SwitchBar.Position = UDim2.new(1, -44, 0.5, -9)
-    SwitchBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Instance.new("UICorner", SwitchBar).CornerRadius = UDim.new(1, 0)
+    SwitchBar.Size = UDim2.new(0, 34, 0, 18); SwitchBar.Position = UDim2.new(1, -44, 0.5, -9)
+    SwitchBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40); Instance.new("UICorner", SwitchBar).CornerRadius = UDim.new(1, 0)
     Instance.new("UIStroke", SwitchBar).Color = Theme.BorderColor
 
     local Circle = Instance.new("Frame", SwitchBar)
-    Circle.Size = UDim2.new(0, 12, 0, 12)
-    Circle.Position = UDim2.new(0, 3, 0.5, -6)
-    Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Instance.new("UICorner", Circle).CornerRadius = UDim.new(1, 0)
+    Circle.Size = UDim2.new(0, 12, 0, 12); Circle.Position = UDim2.new(0, 3, 0.5, -6)
+    Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255); Instance.new("UICorner", Circle).CornerRadius = UDim.new(1, 0)
     
     local state = TData.CurrentValue or false
     local function update(first)
@@ -65,30 +57,24 @@ end
 
 function Elements.CreateSlider(TabPage, SData, Theme)
     local SliderFrame = Instance.new("Frame", TabPage)
-    SliderFrame.Size = UDim2.new(1, -10, 0, 48) -- Taller to prevent cutting off
-    SliderFrame.BackgroundColor3 = Theme.ElementColor
+    SliderFrame.Size = UDim2.new(1, -10, 0, 48); SliderFrame.BackgroundColor3 = Theme.ElementColor
     Instance.new("UICorner", SliderFrame).CornerRadius = UDim.new(0, 10)
-    local s = Instance.new("UIStroke", SliderFrame)
-    s.Color = Theme.BorderColor; s.Thickness = 1.5
+    local s = Instance.new("UIStroke", SliderFrame); s.Color = Theme.BorderColor; s.Thickness = 1.5
 
     local Title = Instance.new("TextLabel", SliderFrame)
-    Title.Text = "  " .. SData.Name; Title.Size = UDim2.new(1, 0, 0, 25)
-    Title.BackgroundTransparency = 1; Title.TextColor3 = Theme.TextColor
-    Title.Font = Enum.Font.SourceSansBold; Title.TextSize = 14; Title.TextXAlignment = "Left"
+    Title.Text = "  " .. SData.Name; Title.Size = UDim2.new(1, 0, 0, 25); Title.BackgroundTransparency = 1
+    Title.TextColor3 = Theme.TextColor; Title.Font = Enum.Font.SourceSansBold; Title.TextSize = 14; Title.TextXAlignment = "Left"
 
     local ValueLabel = Instance.new("TextLabel", SliderFrame)
-    ValueLabel.Size = UDim2.new(1, -15, 0, 25)
-    ValueLabel.BackgroundTransparency = 1; ValueLabel.TextColor3 = Theme.TextColor
+    ValueLabel.Size = UDim2.new(1, -15, 0, 25); ValueLabel.BackgroundTransparency = 1; ValueLabel.TextColor3 = Theme.TextColor
     ValueLabel.Font = Enum.Font.SourceSansBold; ValueLabel.TextSize = 14; ValueLabel.TextXAlignment = "Right"
 
     local BarBack = Instance.new("Frame", SliderFrame)
     BarBack.Size = UDim2.new(1, -24, 0, 6); BarBack.Position = UDim2.new(0, 12, 1, -14)
-    BarBack.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Instance.new("UICorner", BarBack).CornerRadius = UDim.new(1, 0)
+    BarBack.BackgroundColor3 = Color3.fromRGB(40, 40, 40); Instance.new("UICorner", BarBack).CornerRadius = UDim.new(1, 0)
 
     local BarFill = Instance.new("Frame", BarBack)
-    BarFill.Size = UDim2.new(0, 0, 1, 0); BarFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Instance.new("UICorner", BarFill).CornerRadius = UDim.new(1, 0)
+    BarFill.Size = UDim2.new(0, 0, 1, 0); BarFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255); Instance.new("UICorner", BarFill).CornerRadius = UDim.new(1, 0)
 
     local dragging = false
     local function move(input)
@@ -110,8 +96,7 @@ function Elements.CreateDropdown(TabPage, DData, Theme)
     local DropFrame = Instance.new("Frame", TabPage)
     DropFrame.Size = UDim2.new(1, -10, 0, 36); DropFrame.BackgroundColor3 = Theme.ElementColor; DropFrame.ClipsDescendants = true
     Instance.new("UICorner", DropFrame).CornerRadius = UDim.new(0, 10)
-    local s = Instance.new("UIStroke", DropFrame)
-    s.Color = Theme.BorderColor; s.Thickness = 1.5
+    local s = Instance.new("UIStroke", DropFrame); s.Color = Theme.BorderColor; s.Thickness = 1.5
 
     local MainBtn = Instance.new("TextButton", DropFrame)
     MainBtn.Size = UDim2.new(1, 0, 0, 36); MainBtn.BackgroundTransparency = 1
