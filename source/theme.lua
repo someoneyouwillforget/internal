@@ -1,6 +1,6 @@
 return {
     Default = {
-        TextFont = Enum.Font.Michroma,
+        TextFont = Enum.Font.SourceSansBold,
         TextColor = Color3.fromRGB(255, 255, 255),
         Background = Color3.fromRGB(10, 10, 10),
         Topbar = Color3.fromRGB(20, 20, 20),
