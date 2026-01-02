@@ -41,7 +41,6 @@ function Library:CreateWindow(Settings)
     Title.TextSize = 18
     Title.TextXAlignment = "Left"
 
-    -- CONTAINER (This is the frame under the title that disappears when minimized)
     local Content = Instance.new("Frame", Main)
     Content.Name = "Content"
     Content.Size = UDim2.new(1, 0, 1, -62)
@@ -50,9 +49,8 @@ function Library:CreateWindow(Settings)
 
     local Close = Instance.new("TextButton", TitleFrame)
     Close.Size = UDim2.new(0, 24, 0, 24); Close.Position = UDim2.new(1, -32, 0.5, -12)
-    Close.BackgroundColor3 = Color3.fromRGB(60, 20, 20); Close.Text = "×"
-    Close.TextColor3 = Color3.fromRGB(255, 100, 100); Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 8)
-    AddBorder(Close, 1.5)
+    Close.BackgroundColor3 = Color3.fromRGB(60, 20, 20); Close.Text = "×"; Close.TextColor3 = Color3.fromRGB(255, 100, 100)
+    Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 8); AddBorder(Close, 1.5)
 
     local Mini = Instance.new("TextButton", TitleFrame)
     Mini.Size = UDim2.new(0, 24, 0, 24); Mini.Position = UDim2.new(1, -62, 0.5, -12)
@@ -78,14 +76,13 @@ function Library:CreateWindow(Settings)
     local TabList = Instance.new("ScrollingFrame", Content)
     TabList.Position = UDim2.new(0, 12, 0, 36); TabList.Size = UDim2.new(1, -24, 0, 32)
     TabList.BackgroundTransparency = 1; TabList.ScrollBarThickness = 0
-    TabList.CanvasSize = UDim2.new(0, 0, 0, 0) -- Fixed: Updated via code below
+    TabList.CanvasSize = UDim2.new(0, 0, 0, 0)
     
     local layout = Instance.new("UIListLayout", TabList)
     layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 10); layout.VerticalAlignment = "Center"
 
-    -- Tab Visibility Fix
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        TabList.CanvasSize = UDim2.new(0, layout.AbsoluteContentSize.X + 15, 0, 0)
+        TabList.CanvasSize = UDim2.new(0, layout.AbsoluteContentSize.X + 20, 0, 0)
     end)
 
     local ElementsArea = Instance.new("Frame", Content)
@@ -111,8 +108,8 @@ function Library:CreateWindow(Settings)
             TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
         end)
         return {
-            CreateButton = function(_, D) return ElementsAPI.CreateButton(TabPage, D, Theme) end,
-            CreateToggle = function(_, D) return ElementsAPI.CreateToggle(TabPage, D, Theme) end
+            CreateButton = function(_, D) return ElementsAPI.CreateButton(TabPage, D, Theme) end, -- Passes Theme object
+            CreateToggle = function(_, D) return ElementsAPI.CreateToggle(TabPage, D, Theme) end  -- Passes Theme object
         }
     end
     return Window
