@@ -14,7 +14,7 @@ function Library:CreateWindow(Settings)
     local MainStroke = Instance.new("UIStroke", Main)
     MainStroke.Color = Theme.BorderColor; MainStroke.Thickness = 2.5
 
-    -- Dragging
+    -- Dragging Logic
     local dragging, dragInput, dragStart, startPos
     Main.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -35,49 +35,52 @@ function Library:CreateWindow(Settings)
     TitleFrame.Position = UDim2.new(0, 12, 0, 12)
     TitleFrame.BackgroundColor3 = Theme.Topbar
     Instance.new("UICorner", TitleFrame).CornerRadius = UDim.new(0, 12)
-    Instance.new("UIStroke", TitleFrame).Color = Theme.BorderColor
+    local tStroke = Instance.new("UIStroke", TitleFrame)
+    tStroke.Color = Theme.BorderColor; tStroke.Thickness = 1.5
 
     local Title = Instance.new("TextLabel", TitleFrame)
     Title.Size = UDim2.new(1, -80, 1, 0); Title.Position = UDim2.new(0, 15, 0, 0); Title.BackgroundTransparency = 1
     Title.Text = Settings.Name or "INTERNAL"; Title.TextColor3 = Theme.TextColor
     Title.Font = Enum.Font.SourceSansBold; Title.TextSize = 18; Title.TextXAlignment = "Left"
 
+    -- Buttons: Close / Mini
     local Close = Instance.new("TextButton", TitleFrame)
     Close.Size = UDim2.new(0, 24, 0, 24); Close.Position = UDim2.new(1, -32, 0.5, -12); Close.Text = "×"
     Close.BackgroundColor3 = Color3.fromRGB(60, 20, 20); Close.TextColor3 = Color3.fromRGB(255, 100, 100)
-    Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 8); Instance.new("UIStroke", Close).Color = Theme.BorderColor
+    Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 8)
+    local cStroke = Instance.new("UIStroke", Close); cStroke.Color = Theme.BorderColor; cStroke.Thickness = 1.5
 
     local Mini = Instance.new("TextButton", TitleFrame)
     Mini.Size = UDim2.new(0, 24, 0, 24); Mini.Position = UDim2.new(1, -62, 0.5, -12); Mini.Text = "-"
     Mini.BackgroundColor3 = Color3.fromRGB(35, 35, 35); Mini.TextColor3 = Theme.TextColor
-    Instance.new("UICorner", Mini).CornerRadius = UDim.new(0, 8); Instance.new("UIStroke", Mini).Color = Theme.BorderColor
+    Instance.new("UICorner", Mini).CornerRadius = UDim.new(0, 8)
+    local mStroke = Instance.new("UIStroke", Mini); mStroke.Color = Theme.BorderColor; mStroke.Thickness = 1.5
 
     local Content = Instance.new("Frame", Main)
     Content.Size = UDim2.new(1, 0, 1, -62); Content.Position = UDim2.new(0, 0, 0, 62); Content.BackgroundTransparency = 1
 
-    local minimized = false
     Mini.MouseButton1Click:Connect(function()
-        minimized = not minimized
-        Content.Visible = not minimized
+        local isMinimized = Main.Size.Y.Offset < 100
+        Content.Visible = isMinimized
         game:GetService("TweenService"):Create(Main, TweenInfo.new(0.3), {
-            Size = minimized and UDim2.new(0, 400, 0, 62) or UDim2.new(0, 400, 0, 280)
+            Size = isMinimized and UDim2.new(0, 400, 0, 280) or UDim2.new(0, 400, 0, 62)
         }):Play()
     end)
     Close.MouseButton1Click:Connect(function() InternalUI:Destroy() end)
 
+    -- Search Bar with Border & Bold Font
     local Search = Instance.new("TextBox", Content)
     Search.Size = UDim2.new(1, -24, 0, 28); Search.Position = UDim2.new(0, 12, 0, 0)
     Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "Search Settings..."
-    Search.Text = ""; Search.TextColor3 = Theme.TextColor; Search.Font = Enum.Font.SourceSansBold
+    Search.Text = ""; Search.TextColor3 = Theme.TextColor; Search.Font = Enum.Font.SourceSansBold; Search.TextSize = 14
     Instance.new("UICorner", Search).CornerRadius = UDim.new(0, 8)
-    Instance.new("UIStroke", Search).Color = Theme.BorderColor
+    local sStroke = Instance.new("UIStroke", Search); sStroke.Color = Theme.BorderColor; sStroke.Thickness = 1.2
 
     local TabList = Instance.new("ScrollingFrame", Content)
     TabList.Position = UDim2.new(0, 12, 0, 36); TabList.Size = UDim2.new(1, -24, 0, 32)
     TabList.BackgroundTransparency = 1; TabList.ScrollBarThickness = 0
-    
-    local layout = Instance.new("UIListLayout", TabList)
-    layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 10); layout.VerticalAlignment = "Center"
+    local layout = Instance.new("UIListLayout", TabList); layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 10); layout.VerticalAlignment = "Center"
+
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         TabList.CanvasSize = UDim2.new(0, layout.AbsoluteContentSize.X, 0, 0)
     end)
@@ -91,7 +94,7 @@ function Library:CreateWindow(Settings)
         TabBtn.Size = UDim2.new(0, 100, 0, 26); TabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabBtn.Text = Name; TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150); TabBtn.Font = Enum.Font.SourceSansBold; TabBtn.TextSize = 14
         Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8)
-        Instance.new("UIStroke", TabBtn).Color = Theme.BorderColor
+        local tabStroke = Instance.new("UIStroke", TabBtn); tabStroke.Color = Theme.BorderColor; tabStroke.Thickness = 1.2
 
         local TabPage = Instance.new("ScrollingFrame", ElementsArea)
         TabPage.Size = UDim2.new(1, 0, 1, 0); TabPage.BackgroundTransparency = 1; TabPage.Visible = false; TabPage.ScrollBarThickness = 0
