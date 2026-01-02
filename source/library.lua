@@ -47,22 +47,9 @@ function Library:CreateWindow(Settings)
     Close.BackgroundColor3 = Color3.fromRGB(60, 20, 20); Close.TextColor3 = Color3.fromRGB(255, 100, 100)
     Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 8); Instance.new("UIStroke", Close).Color = Theme.BorderColor
 
-    local Mini = Instance.new("TextButton", TitleFrame)
-    Mini.Size = UDim2.new(0, 24, 0, 24); Mini.Position = UDim2.new(1, -62, 0.5, -12); Mini.Text = "-"
-    Mini.BackgroundColor3 = Color3.fromRGB(35, 35, 35); Mini.TextColor3 = Theme.TextColor
-    Instance.new("UICorner", Mini).CornerRadius = UDim.new(0, 8); Instance.new("UIStroke", Mini).Color = Theme.BorderColor
-
     local Content = Instance.new("Frame", Main)
     Content.Size = UDim2.new(1, 0, 1, -62); Content.Position = UDim2.new(0, 0, 0, 62); Content.BackgroundTransparency = 1
 
-    Mini.MouseButton1Click:Connect(function()
-        local isMinimized = Main.Size.Y.Offset < 100
-        Content.Visible = isMinimized
-        game:GetService("TweenService"):Create(Main, TweenInfo.new(0.3), {Size = isMinimized and UDim2.new(0, 400, 0, 280) or UDim2.new(0, 400, 0, 62)}):Play()
-    end)
-    Close.MouseButton1Click:Connect(function() InternalUI:Destroy() end)
-
-    -- BOX BORDER RESTORED: Search Bar
     local Search = Instance.new("TextBox", Content)
     Search.Size = UDim2.new(1, -24, 0, 28); Search.Position = UDim2.new(0, 12, 0, 0)
     Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "Search Settings..."
@@ -75,7 +62,6 @@ function Library:CreateWindow(Settings)
     TabList.Position = UDim2.new(0, 12, 0, 36); TabList.Size = UDim2.new(1, -24, 0, 32)
     TabList.BackgroundTransparency = 1; TabList.ScrollBarThickness = 0
     local layout = Instance.new("UIListLayout", TabList); layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 10); layout.VerticalAlignment = "Center"
-    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() TabList.CanvasSize = UDim2.new(0, layout.AbsoluteContentSize.X, 0, 0) end)
 
     local ElementsArea = Instance.new("Frame", Content)
     ElementsArea.Position = UDim2.new(0, 12, 0, 75); ElementsArea.Size = UDim2.new(1, -24, 1, -100); ElementsArea.BackgroundTransparency = 1
@@ -86,12 +72,11 @@ function Library:CreateWindow(Settings)
         TabBtn.Size = UDim2.new(0, 100, 0, 26); TabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabBtn.Text = Name; TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150); TabBtn.Font = Enum.Font.SourceSansBold; TabBtn.TextSize = 14
         Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8)
-        local tBtnStroke = Instance.new("UIStroke", TabBtn)
-        tBtnStroke.Color = Theme.BorderColor; tBtnStroke.Thickness = 1.5 -- BOX BORDER
+        Instance.new("UIStroke", TabBtn).Color = Theme.BorderColor -- BOX BORDER
 
         local TabPage = Instance.new("ScrollingFrame", ElementsArea)
         TabPage.Size = UDim2.new(1, 0, 1, 0); TabPage.BackgroundTransparency = 1; TabPage.Visible = false; TabPage.ScrollBarThickness = 0
-        local elayout = Instance.new("UIListLayout", TabPage); elayout.Padding = UDim.new(0, 8); elayout.HorizontalAlignment = "Center"
+        Instance.new("UIListLayout", TabPage).Padding = UDim.new(0, 8)
 
         TabBtn.MouseButton1Click:Connect(function()
             for _, v in pairs(ElementsArea:GetChildren()) do if v:IsA("ScrollingFrame") then v.Visible = false end end
