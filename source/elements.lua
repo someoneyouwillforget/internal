@@ -1,36 +1,32 @@
 local Elements = {}
 function Elements.CreateButton(TabPage, BData, Theme)
     local Button = Instance.new("TextButton", TabPage)
-    Button.Size = UDim2.new(1, -5, 0, 28) -- Smaller buttons
+    Button.Size = UDim2.new(1, 0, 0, 32)
     Button.BackgroundColor3 = Theme.ElementColor
-    Button.BackgroundTransparency = 0.2
-    Button.Text = BData.Name
-    Button.TextColor3 = Theme.TextColor
-    Button.Font = Theme.TextFont
-    Button.TextSize = 12
-    local c = Instance.new("UICorner", Button); c.CornerRadius = Theme.Rounding
-    local s = Instance.new("UIStroke", Button); s.Color = Theme.BorderColor; s.ApplyStrokeMode = "Border"
+    Button.Text = BData.Name; Button.TextColor3 = Theme.TextColor
+    Button.Font = Theme.TextFont; Button.TextSize = 13
+    Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 10)
+    local s = Instance.new("UIStroke", Button); s.Color = Theme.BorderColor; s.Thickness = 1.5
     Button.MouseButton1Click:Connect(function() pcall(BData.Callback) end)
     return Button
 end
 
 function Elements.CreateToggle(TabPage, TData, Theme)
     local Toggle = Instance.new("TextButton", TabPage)
-    Toggle.Size = UDim2.new(1, -5, 0, 28)
+    Toggle.Size = UDim2.new(1, 0, 0, 32)
     Toggle.BackgroundColor3 = Theme.ElementColor
-    Toggle.BackgroundTransparency = 0.2
     Toggle.Text = "  "..TData.Name; Toggle.TextXAlignment = "Left"
-    Toggle.TextColor3 = Theme.TextColor; Toggle.Font = Theme.TextFont; Toggle.TextSize = 12
-    Instance.new("UICorner", Toggle).CornerRadius = Theme.Rounding
-    Instance.new("UIStroke", Toggle).Color = Theme.BorderColor
+    Toggle.TextColor3 = Theme.TextColor; Toggle.Font = Theme.TextFont; Toggle.TextSize = 13
+    Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 10)
+    local s = Instance.new("UIStroke", Toggle); s.Color = Theme.BorderColor; s.Thickness = 1.5
     
     local Ind = Instance.new("Frame", Toggle)
-    Ind.Position = UDim2.new(1, -22, 0.5, -7); Ind.Size = UDim2.new(0, 14, 0, 14)
-    Instance.new("UICorner", Ind).CornerRadius = UDim.new(0, 3)
+    Ind.Position = UDim2.new(1, -26, 0.5, -8); Ind.Size = UDim2.new(0, 16, 0, 16)
+    Instance.new("UICorner", Ind).CornerRadius = UDim.new(0, 5)
     
     local state = TData.CurrentValue or false
     local function update() 
-        Ind.BackgroundColor3 = state and Theme.Accent or Color3.fromRGB(40,40,40)
+        Ind.BackgroundColor3 = state and Color3.fromRGB(255,255,255) or Color3.fromRGB(50,50,50)
         pcall(TData.Callback, state)
     end
     Toggle.MouseButton1Click:Connect(function() state = not state; update() end)
