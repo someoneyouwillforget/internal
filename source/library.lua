@@ -16,14 +16,15 @@ function Library:CreateWindow(Settings)
     InternalUI.Name = "InternalSuite"
     InternalUI.Parent = (gethui and gethui()) or game:GetService("CoreGui")
 
+    -- MAIN FRAME: Bigger workspace as requested
     local Main = Instance.new("Frame", InternalUI)
     Main.BackgroundColor3 = Theme.Background
     Main.BackgroundTransparency = 0.1
-    Main.Position = UDim2.new(0.5, -175, 0.5, -125)
-    Main.Size = UDim2.new(0, 350, 0, 280) -- Slightly bigger frame
+    Main.Position = UDim2.new(0.5, -225, 0.5, -150)
+    Main.Size = UDim2.new(0, 450, 0, 320) -- Bigger Frame
     Main.ClipsDescendants = true
     Instance.new("UICorner", Main).CornerRadius = Theme.Rounding
-    AddBorder(Main, 2)
+    AddBorder(Main, 2.5)
 
     -- TITLE CAPSULE
     local TitleFrame = Instance.new("Frame", Main)
@@ -39,11 +40,11 @@ function Library:CreateWindow(Settings)
     Title.BackgroundTransparency = 1
     Title.Text = Settings.Name or "INTERNAL"
     Title.TextColor3 = Theme.TextColor
-    Title.Font = Theme.TextFont
+    Title.Font = Enum.Font.Code -- Font changed to Code
     Title.TextSize = 14
     Title.TextXAlignment = "Left"
 
-    -- BUTTONS (X / -) Logic
+    -- MINIMIZE / CLOSE
     local Close = Instance.new("TextButton", TitleFrame)
     Close.Size = UDim2.new(0, 24, 0, 24)
     Close.Position = UDim2.new(1, -32, 0.5, -12)
@@ -60,40 +61,54 @@ function Library:CreateWindow(Settings)
     Instance.new("UICorner", Mini).CornerRadius = UDim.new(0, 8)
     AddBorder(Mini, 1.5)
 
-    -- FUNCTIONALITY
-    Close.MouseButton1Click:Connect(function()
-        InternalUI:Destroy()
-    end)
-
+    -- MINIMIZE LOGIC (Collapses to TitleFrame only)
     local minimized = false
     Mini.MouseButton1Click:Connect(function()
         minimized = not minimized
-        local targetSize = minimized and UDim2.new(0, 350, 0, 62) or UDim2.new(0, 350, 0, 280)
-        game:GetService("TweenService"):Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Quart), {Size = targetSize}):Play()
+        local targetSize = minimized and UDim2.new(0, 450, 0, 62) or UDim2.new(0, 450, 0, 320)
+        game:GetService("TweenService"):Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quart), {Size = targetSize}):Play()
     end)
+    Close.MouseButton1Click:Connect(function() InternalUI:Destroy() end)
 
-    -- TABS (Thinner and Longer)
+    -- SEARCH BAR
+    local SearchFrame = Instance.new("TextBox", Main)
+    SearchFrame.Name = "Search"
+    SearchFrame.Size = UDim2.new(1, -24, 0, 28)
+    SearchFrame.Position = UDim2.new(0, 12, 0, 60)
+    SearchFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    SearchFrame.PlaceholderText = "Search settings..."
+    SearchFrame.Text = ""
+    SearchFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SearchFrame.PlaceholderColor3 = Color3.fromRGB(100, 100, 100)
+    SearchFrame.Font = Enum.Font.Code
+    SearchFrame.TextSize = 12
+    Instance.new("UICorner", SearchFrame).CornerRadius = UDim.new(0, 8)
+    AddBorder(SearchFrame, 1.2)
+
+    -- TABS: SWIPEABLE (ScrollingFrame)
     local TabList = Instance.new("ScrollingFrame", Main)
-    TabList.Position = UDim2.new(0, 10, 0, 62)
-    TabList.Size = UDim2.new(1, -20, 0, 26) -- Thinner height
-    TabList.BackgroundTransparency = 1; TabList.ScrollBarThickness = 0
+    TabList.Position = UDim2.new(0, 12, 0, 95)
+    TabList.Size = UDim2.new(1, -24, 0, 24) -- Even thinner
+    TabList.BackgroundTransparency = 1
+    TabList.ScrollBarThickness = 0
+    TabList.CanvasSize = UDim2.new(2, 0, 0, 0) -- Infinite horizontal scroll
     local layout = Instance.new("UIListLayout", TabList)
-    layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 8); layout.HorizontalAlignment = "Center"
+    layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 8)
 
     local ElementsArea = Instance.new("Frame", Main)
     ElementsArea.Name = "Elements"
-    ElementsArea.Position = UDim2.new(0, 12, 0, 100)
-    ElementsArea.Size = UDim2.new(1, -24, 1, -130)
+    ElementsArea.Position = UDim2.new(0, 12, 0, 130)
+    ElementsArea.Size = UDim2.new(1, -24, 1, -160)
     ElementsArea.BackgroundTransparency = 1
 
     -- IOS DRAG BAR
     local DragHandle = Instance.new("Frame", Main)
     DragHandle.Size = UDim2.new(1, 0, 0, 20); DragHandle.Position = UDim2.new(0, 0, 1, -20); DragHandle.BackgroundTransparency = 1
     local VisualBar = Instance.new("Frame", DragHandle)
-    VisualBar.Size = UDim2.new(0, 60, 0, 4); VisualBar.Position = UDim2.new(0.5, -30, 0.5, -2); VisualBar.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    VisualBar.Size = UDim2.new(0, 80, 0, 4); VisualBar.Position = UDim2.new(0.5, -40, 0.5, -2); VisualBar.BackgroundColor3 = Color3.fromRGB(255,255,255)
     Instance.new("UICorner", VisualBar).CornerRadius = UDim.new(1, 0)
 
-    -- DRAG LOGIC (Bottom bar)
+    -- Dragging Logic
     local dragging, dragStart, startPos
     DragHandle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -111,11 +126,11 @@ function Library:CreateWindow(Settings)
     local Window = {}
     function Window:CreateTab(Name)
         local TabBtn = Instance.new("TextButton", TabList)
-        TabBtn.Size = UDim2.new(0, 95, 1, 0) -- Longer for more text
+        TabBtn.Size = UDim2.new(0, 90, 1, 0)
         TabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabBtn.Text = Name; TabBtn.TextColor3 = Color3.fromRGB(180, 180, 180)
-        TabBtn.Font = Theme.TextFont; TabBtn.TextSize = 11
-        Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8)
+        TabBtn.Font = Enum.Font.Code; TabBtn.TextSize = 11
+        Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 6)
         AddBorder(TabBtn, 1.2)
 
         local TabPage = Instance.new("ScrollingFrame", ElementsArea)
@@ -125,11 +140,8 @@ function Library:CreateWindow(Settings)
         TabBtn.MouseButton1Click:Connect(function()
             for _, v in pairs(ElementsArea:GetChildren()) do v.Visible = false end
             TabPage.Visible = true
-            for _, b in pairs(TabList:GetChildren()) do 
-                if b:IsA("TextButton") then b.TextColor3 = Color3.fromRGB(180, 180, 180); b.UIStroke.Color = Theme.BorderColor end 
-            end
+            for _, b in pairs(TabList:GetChildren()) do if b:IsA("TextButton") then b.TextColor3 = Color3.fromRGB(150, 150, 150) end end
             TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            TabBtn.UIStroke.Color = Color3.fromRGB(255, 255, 255)
         end)
         return {
             CreateButton = function(_, D) return ElementsAPI.CreateButton(TabPage, D, Theme) end,
