@@ -10,7 +10,7 @@ function Elements.CreateButton(TabPage, BData, Theme)
     Button.Text = BData.Name
     Button.TextColor3 = Theme.TextColor
     Button.Font = Theme.TextFont
-    Button.TextSize = 15
+    Button.TextSize = 14
     Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", Button)
     s.Color = Theme.BorderColor
@@ -20,7 +20,7 @@ function Elements.CreateButton(TabPage, BData, Theme)
     return Button
 end
 
--- TOGGLE
+-- TOGGLE (iOS Switch Style)
 function Elements.CreateToggle(TabPage, TData, Theme)
     local Toggle = Instance.new("TextButton", TabPage)
     Toggle.Size = UDim2.new(1, 0, 0, 38)
@@ -29,7 +29,7 @@ function Elements.CreateToggle(TabPage, TData, Theme)
     Toggle.TextXAlignment = Enum.TextXAlignment.Left
     Toggle.TextColor3 = Theme.TextColor
     Toggle.Font = Theme.TextFont
-    Toggle.TextSize = 15
+    Toggle.TextSize = 14
     Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", Toggle)
     s.Color = Theme.BorderColor
@@ -68,7 +68,7 @@ function Elements.CreateToggle(TabPage, TData, Theme)
     update(true)
 end
 
--- SLIDER (New)
+-- SLIDER
 function Elements.CreateSlider(TabPage, SData, Theme)
     local SliderFrame = Instance.new("Frame", TabPage)
     SliderFrame.Size = UDim2.new(1, 0, 0, 45)
@@ -124,13 +124,12 @@ function Elements.CreateSlider(TabPage, SData, Theme)
         end
     end)
 
-    -- Set Default
     local defPos = (SData.Default - SData.Min) / (SData.Max - SData.Min)
     BarFill.Size = UDim2.new(defPos, 0, 1, 0)
     ValueLabel.Text = tostring(SData.Default)
 end
 
--- DROPDOWN (New)
+-- DROPDOWN
 function Elements.CreateDropdown(TabPage, DData, Theme)
     local Dropped = false
     local DropFrame = Instance.new("Frame", TabPage)
