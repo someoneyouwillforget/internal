@@ -4,28 +4,21 @@ local UserInputService = game:GetService("UserInputService")
 
 function Elements.CreateButton(TabPage, BData, Theme)
     local Button = Instance.new("TextButton", TabPage)
-    Button.Size = UDim2.new(1, -10, 0, 36)
-    Button.BackgroundColor3 = Theme.ElementColor
-    Button.Text = BData.Name
-    Button.TextColor3 = Theme.TextColor
-    Button.Font = Enum.Font.SourceSansBold
-    Button.TextSize = 14
+    Button.Size = UDim2.new(1, -10, 0, 36); Button.BackgroundColor3 = Theme.ElementColor
+    Button.Text = BData.Name; Button.TextColor3 = Theme.TextColor; Button.Font = Enum.Font.SourceSansBold; Button.TextSize = 14
     Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 10)
-    local s = Instance.new("UIStroke", Button)
-    s.Color = Theme.BorderColor; s.Thickness = 1.5
-    Button.MouseButton1Click:Connect(function() pcall(BData.Callback) end)
+    Instance.new("UIStroke", Button).Color = Theme.BorderColor; Button.MouseButton1Click:Connect(function() pcall(BData.Callback) end)
 end
 
 function Elements.CreateToggle(TabPage, TData, Theme)
     local ToggleFrame = Instance.new("Frame", TabPage)
-    ToggleFrame.Size = UDim2.new(1, -10, 0, 38)
-    ToggleFrame.BackgroundColor3 = Theme.ElementColor
+    ToggleFrame.Size = UDim2.new(1, -10, 0, 38); ToggleFrame.BackgroundColor3 = Theme.ElementColor
     Instance.new("UICorner", ToggleFrame).CornerRadius = UDim.new(0, 10)
     Instance.new("UIStroke", ToggleFrame).Color = Theme.BorderColor
 
     local ToggleBtn = Instance.new("TextButton", ToggleFrame)
     ToggleBtn.Size = UDim2.new(1, 0, 1, 0); ToggleBtn.BackgroundTransparency = 1
-    ToggleBtn.Text = "      " .. TData.Name -- Padding for text
+    ToggleBtn.Text = "      " .. TData.Name -- Padding for the header
     ToggleBtn.TextXAlignment = "Left"; ToggleBtn.TextColor3 = Theme.TextColor
     ToggleBtn.Font = Enum.Font.SourceSansBold; ToggleBtn.TextSize = 14
 
@@ -67,50 +60,26 @@ function Elements.CreateSlider(TabPage, SData, Theme)
     ValueLabel.Size = UDim2.new(1, -15, 0, 25); ValueLabel.BackgroundTransparency = 1
     ValueLabel.TextColor3 = Theme.TextColor; ValueLabel.Font = Enum.Font.SourceSansBold; ValueLabel.TextSize = 14; ValueLabel.TextXAlignment = "Right"
 
-    local BarBack = Instance.new("TextButton", SliderFrame)
+    local BarBack = Instance.new("Frame", SliderFrame)
     BarBack.Size = UDim2.new(1, -24, 0, 6); BarBack.Position = UDim2.new(0, 12, 1, -14)
-    BarBack.BackgroundColor3 = Color3.fromRGB(40, 40, 40); BarBack.Text = ""; Instance.new("UICorner", BarBack).CornerRadius = UDim.new(1, 0)
+    BarBack.BackgroundColor3 = Color3.fromRGB(40, 40, 40); Instance.new("UICorner", BarBack).CornerRadius = UDim.new(1, 0)
 
     local BarFill = Instance.new("Frame", BarBack)
     BarFill.Size = UDim2.new(0, 0, 1, 0); BarFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255); Instance.new("UICorner", BarFill).CornerRadius = UDim.new(1, 0)
 
     local dragging = false
-    local function move()
-        local pos = math.clamp((UserInputService:GetMouseLocation().X - BarBack.AbsolutePosition.X) / BarBack.AbsoluteSize.X, 0, 1)
+    local function move(input)
+        local pos = math.clamp((input.Position.X - BarBack.AbsolutePosition.X) / BarBack.AbsoluteSize.X, 0, 1)
         local val = math.floor(SData.Min + ((SData.Max - SData.Min) * pos))
         ValueLabel.Text = tostring(val); BarFill.Size = UDim2.new(pos, 0, 1, 0)
         pcall(SData.Callback, val)
     end
-
-    BarBack.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = true move() end end)
+    SliderFrame.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = true move(input) end end)
     UserInputService.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end end)
-    UserInputService.InputChanged:Connect(function(input) if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then move() end end)
+    UserInputService.InputChanged:Connect(function(input) if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then move(input) end end)
     
     local defPos = (SData.Default - SData.Min) / (SData.Max - SData.Min)
     BarFill.Size = UDim2.new(defPos, 0, 1, 0); ValueLabel.Text = tostring(SData.Default)
-end
-
-function Elements.CreateDropdown(TabPage, DData, Theme)
-    local Dropped = false
-    local DropFrame = Instance.new("Frame", TabPage)
-    DropFrame.Size = UDim2.new(1, -10, 0, 36); DropFrame.BackgroundColor3 = Theme.ElementColor; DropFrame.ClipsDescendants = true
-    Instance.new("UICorner", DropFrame).CornerRadius = UDim.new(0, 10)
-    Instance.new("UIStroke", DropFrame).Color = Theme.BorderColor
-
-    local MainBtn = Instance.new("TextButton", DropFrame)
-    MainBtn.Size = UDim2.new(1, 0, 0, 36); MainBtn.BackgroundTransparency = 1
-    MainBtn.Text = "      " .. DData.Name .. " : " .. (DData.Default or "None")
-    MainBtn.TextColor3 = Theme.TextColor; MainBtn.Font = Enum.Font.SourceSansBold; MainBtn.TextSize = 14; MainBtn.TextXAlignment = "Left"
-
-    local ItemHolder = Instance.new("Frame", DropFrame)
-    ItemHolder.Position = UDim2.new(0, 5, 0, 40); ItemHolder.Size = UDim2.new(1, -10, 0, 0); ItemHolder.BackgroundTransparency = 1
-    Instance.new("UIListLayout", ItemHolder).Padding = UDim.new(0, 4)
-
-    MainBtn.MouseButton1Click:Connect(function()
-        Dropped = not Dropped
-        TweenService:Create(DropFrame, TweenInfo.new(0.3), {Size = Dropped and UDim2.new(1, -10, 0, 150) or UDim2.new(1, -10, 0, 36)}):Play()
-    end)
-    return DropFrame
 end
 
 return Elements
