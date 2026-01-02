@@ -6,8 +6,8 @@ function Elements.CreateButton(TabPage, BData, Theme)
     Button.BackgroundColor3 = Theme.ElementColor
     Button.Text = BData.Name
     Button.TextColor3 = Theme.TextColor
-    Button.Font = Theme.TextFont
-    Button.TextSize = 16 -- Standard font looks better slightly larger
+    Button.Font = Theme.TextFont -- FIXED: Inherits from Theme
+    Button.TextSize = 16
     Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", Button)
     s.Color = Theme.BorderColor
@@ -24,7 +24,7 @@ function Elements.CreateToggle(TabPage, TData, Theme)
     Toggle.Text = "  " .. TData.Name
     Toggle.TextXAlignment = Enum.TextXAlignment.Left
     Toggle.TextColor3 = Theme.TextColor
-    Toggle.Font = Theme.TextFont
+    Toggle.Font = Theme.TextFont -- FIXED: Inherits from Theme
     Toggle.TextSize = 16
     Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", Toggle)
