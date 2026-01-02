@@ -4,14 +4,15 @@ local UserInputService = game:GetService("UserInputService")
 
 function Elements.CreateButton(TabPage, BData, Theme)
     local Button = Instance.new("TextButton", TabPage)
-    Button.Size = UDim2.new(1, 0, 0, 36)
+    Button.Size = UDim2.new(1, -10, 0, 36) -- Added margin
     Button.BackgroundColor3 = Theme.ElementColor
     Button.Text = BData.Name
     Button.TextColor3 = Theme.TextColor
-    Button.Font = Enum.Font.SourceSansBold -- Forced
+    Button.Font = Enum.Font.SourceSansBold
     Button.TextSize = 14
     Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 10)
-    Instance.new("UIStroke", Button).Color = Theme.BorderColor
+    local s = Instance.new("UIStroke", Button)
+    s.Color = Theme.BorderColor; s.Thickness = 1.5
     
     Button.MouseButton1Click:Connect(function() pcall(BData.Callback) end)
     return Button
@@ -19,7 +20,7 @@ end
 
 function Elements.CreateToggle(TabPage, TData, Theme)
     local ToggleFrame = Instance.new("Frame", TabPage)
-    ToggleFrame.Size = UDim2.new(1, 0, 0, 38)
+    ToggleFrame.Size = UDim2.new(1, -10, 0, 38) -- Added margin
     ToggleFrame.BackgroundColor3 = Theme.ElementColor
     Instance.new("UICorner", ToggleFrame).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", ToggleFrame)
@@ -31,7 +32,7 @@ function Elements.CreateToggle(TabPage, TData, Theme)
     ToggleBtn.Text = "  " .. TData.Name
     ToggleBtn.TextXAlignment = "Left"
     ToggleBtn.TextColor3 = Theme.TextColor
-    ToggleBtn.Font = Enum.Font.SourceSansBold -- Forced Fix
+    ToggleBtn.Font = Enum.Font.SourceSansBold
     ToggleBtn.TextSize = 14
 
     local SwitchBar = Instance.new("Frame", ToggleFrame)
@@ -39,6 +40,7 @@ function Elements.CreateToggle(TabPage, TData, Theme)
     SwitchBar.Position = UDim2.new(1, -44, 0.5, -9)
     SwitchBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     Instance.new("UICorner", SwitchBar).CornerRadius = UDim.new(1, 0)
+    Instance.new("UIStroke", SwitchBar).Color = Theme.BorderColor
 
     local Circle = Instance.new("Frame", SwitchBar)
     Circle.Size = UDim2.new(0, 12, 0, 12)
@@ -63,10 +65,11 @@ end
 
 function Elements.CreateSlider(TabPage, SData, Theme)
     local SliderFrame = Instance.new("Frame", TabPage)
-    SliderFrame.Size = UDim2.new(1, 0, 0, 45)
+    SliderFrame.Size = UDim2.new(1, -10, 0, 48) -- Taller to prevent cutting off
     SliderFrame.BackgroundColor3 = Theme.ElementColor
     Instance.new("UICorner", SliderFrame).CornerRadius = UDim.new(0, 10)
-    Instance.new("UIStroke", SliderFrame).Color = Theme.BorderColor
+    local s = Instance.new("UIStroke", SliderFrame)
+    s.Color = Theme.BorderColor; s.Thickness = 1.5
 
     local Title = Instance.new("TextLabel", SliderFrame)
     Title.Text = "  " .. SData.Name; Title.Size = UDim2.new(1, 0, 0, 25)
@@ -79,7 +82,7 @@ function Elements.CreateSlider(TabPage, SData, Theme)
     ValueLabel.Font = Enum.Font.SourceSansBold; ValueLabel.TextSize = 14; ValueLabel.TextXAlignment = "Right"
 
     local BarBack = Instance.new("Frame", SliderFrame)
-    BarBack.Size = UDim2.new(1, -24, 0, 6); BarBack.Position = UDim2.new(0, 12, 1, -12)
+    BarBack.Size = UDim2.new(1, -24, 0, 6); BarBack.Position = UDim2.new(0, 12, 1, -14)
     BarBack.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     Instance.new("UICorner", BarBack).CornerRadius = UDim.new(1, 0)
 
@@ -105,9 +108,10 @@ end
 function Elements.CreateDropdown(TabPage, DData, Theme)
     local Dropped = false
     local DropFrame = Instance.new("Frame", TabPage)
-    DropFrame.Size = UDim2.new(1, 0, 0, 36); DropFrame.BackgroundColor3 = Theme.ElementColor; DropFrame.ClipsDescendants = true
+    DropFrame.Size = UDim2.new(1, -10, 0, 36); DropFrame.BackgroundColor3 = Theme.ElementColor; DropFrame.ClipsDescendants = true
     Instance.new("UICorner", DropFrame).CornerRadius = UDim.new(0, 10)
-    Instance.new("UIStroke", DropFrame).Color = Theme.BorderColor
+    local s = Instance.new("UIStroke", DropFrame)
+    s.Color = Theme.BorderColor; s.Thickness = 1.5
 
     local MainBtn = Instance.new("TextButton", DropFrame)
     MainBtn.Size = UDim2.new(1, 0, 0, 36); MainBtn.BackgroundTransparency = 1
@@ -120,7 +124,7 @@ function Elements.CreateDropdown(TabPage, DData, Theme)
 
     MainBtn.MouseButton1Click:Connect(function()
         Dropped = not Dropped
-        TweenService:Create(DropFrame, TweenInfo.new(0.3), {Size = Dropped and UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y + 45) or UDim2.new(1, 0, 0, 36)}):Play()
+        TweenService:Create(DropFrame, TweenInfo.new(0.3), {Size = Dropped and UDim2.new(1, -10, 0, layout.AbsoluteContentSize.Y + 45) or UDim2.new(1, -10, 0, 36)}):Play()
     end)
 
     for _, option in pairs(DData.Options) do
@@ -130,7 +134,7 @@ function Elements.CreateDropdown(TabPage, DData, Theme)
         Instance.new("UICorner", OptBtn).CornerRadius = UDim.new(0, 6)
         OptBtn.MouseButton1Click:Connect(function()
             MainBtn.Text = "  " .. DData.Name .. " : " .. option; Dropped = false
-            TweenService:Create(DropFrame, TweenInfo.new(0.3), {Size = UDim2.new(1, 0, 0, 36)}):Play()
+            TweenService:Create(DropFrame, TweenInfo.new(0.3), {Size = UDim2.new(1, -10, 0, 36)}):Play()
             pcall(DData.Callback, option)
         end)
     end
