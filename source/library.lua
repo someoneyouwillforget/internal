@@ -18,14 +18,14 @@ function Library:CreateWindow(Settings)
 
     local Main = Instance.new("Frame", InternalUI)
     Main.BackgroundColor3 = Theme.Background
-    Main.Position = UDim2.new(0.5, -225, 0.5, -150)
-    Main.Size = UDim2.new(0, 450, 0, 320)
+    Main.Position = UDim2.new(0.5, -200, 0.5, -140)
+    Main.Size = UDim2.new(0, 400, 0, 280)
     Main.ClipsDescendants = true
     Instance.new("UICorner", Main).CornerRadius = Theme.Rounding
     AddBorder(Main, 2.5)
 
     local TitleFrame = Instance.new("Frame", Main)
-    TitleFrame.Size = UDim2.new(1, -24, 0, 40)
+    TitleFrame.Size = UDim2.new(1, -24, 0, 38)
     TitleFrame.Position = UDim2.new(0, 12, 0, 12)
     TitleFrame.BackgroundColor3 = Theme.Topbar
     Instance.new("UICorner", TitleFrame).CornerRadius = UDim.new(0, 12)
@@ -38,13 +38,13 @@ function Library:CreateWindow(Settings)
     Title.Text = Settings.Name or "INTERNAL"
     Title.TextColor3 = Theme.TextColor
     Title.Font = Theme.TextFont
-    Title.TextSize = 12
+    Title.TextSize = 18
     Title.TextXAlignment = "Left"
 
     local Content = Instance.new("Frame", Main)
     Content.Name = "Content"
-    Content.Size = UDim2.new(1, 0, 1, -65)
-    Content.Position = UDim2.new(0, 0, 0, 65)
+    Content.Size = UDim2.new(1, 0, 1, -62)
+    Content.Position = UDim2.new(0, 0, 0, 62)
     Content.BackgroundTransparency = 1
 
     local Close = Instance.new("TextButton", TitleFrame)
@@ -64,27 +64,27 @@ function Library:CreateWindow(Settings)
         minimized = not minimized
         Content.Visible = not minimized
         game:GetService("TweenService"):Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quart), {
-            Size = minimized and UDim2.new(0, 450, 0, 64) or UDim2.new(0, 450, 0, 320)
+            Size = minimized and UDim2.new(0, 400, 0, 62) or UDim2.new(0, 400, 0, 280)
         }):Play()
     end)
     Close.MouseButton1Click:Connect(function() InternalUI:Destroy() end)
 
     local Search = Instance.new("TextBox", Content)
-    Search.Size = UDim2.new(1, -24, 0, 30); Search.Position = UDim2.new(0, 12, 0, 0)
-    Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "SEARCH PROTOCOL..."
-    Search.TextColor3 = Color3.fromRGB(255, 255, 255); Search.Font = Theme.TextFont; Search.TextSize = 10
+    Search.Size = UDim2.new(1, -24, 0, 28); Search.Position = UDim2.new(0, 12, 0, 0)
+    Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "Search..."
+    Search.TextColor3 = Color3.fromRGB(255, 255, 255); Search.Font = Theme.TextFont; Search.TextSize = 14
     Instance.new("UICorner", Search).CornerRadius = UDim.new(0, 8); AddBorder(Search, 1.2)
 
     local TabList = Instance.new("ScrollingFrame", Content)
-    TabList.Position = UDim2.new(0, 12, 0, 42)
-    TabList.Size = UDim2.new(1, -24, 0, 36)
+    TabList.Position = UDim2.new(0, 12, 0, 36)
+    TabList.Size = UDim2.new(1, -24, 0, 32)
     TabList.BackgroundTransparency = 1; TabList.ScrollBarThickness = 0
     TabList.AutomaticCanvasSize = Enum.AutomaticSize.X
     local layout = Instance.new("UIListLayout", TabList)
     layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 10); layout.VerticalAlignment = "Center"
 
     local ElementsArea = Instance.new("Frame", Content)
-    ElementsArea.Position = UDim2.new(0, 12, 0, 85); ElementsArea.Size = UDim2.new(1, -24, 1, -110)
+    ElementsArea.Position = UDim2.new(0, 12, 0, 75); ElementsArea.Size = UDim2.new(1, -24, 1, -100)
     ElementsArea.BackgroundTransparency = 1
 
     local DragHandle = Instance.new("Frame", Main)
@@ -110,9 +110,9 @@ function Library:CreateWindow(Settings)
     local Window = {}
     function Window:CreateTab(Name)
         local TabBtn = Instance.new("TextButton", TabList)
-        TabBtn.Size = UDim2.new(0, 120, 0, 28)
+        TabBtn.Size = UDim2.new(0, 100, 0, 26)
         TabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        TabBtn.Text = Name; TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150); TabBtn.Font = Theme.TextFont; TabBtn.TextSize = 9
+        TabBtn.Text = Name; TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150); TabBtn.Font = Theme.TextFont; TabBtn.TextSize = 14
         Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8); AddBorder(TabBtn, 1.2)
 
         local TabPage = Instance.new("ScrollingFrame", ElementsArea)
