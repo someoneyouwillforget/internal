@@ -7,6 +7,6 @@ return {
         Accent = Color3.fromRGB(120, 120, 120),
         BorderColor = Color3.fromRGB(60, 60, 60),
         ElementColor = Color3.fromRGB(22, 22, 22),
-        Rounding = UDim.new(0, 6)
+        Rounding = UDim.new(0, 10)
     }
 }
