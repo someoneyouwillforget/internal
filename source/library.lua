@@ -16,16 +16,14 @@ function Library:CreateWindow(Settings)
     InternalUI.Name = "InternalSuite"
     InternalUI.Parent = (gethui and gethui()) or game:GetService("CoreGui")
 
-    -- MAIN FRAME
     local Main = Instance.new("Frame", InternalUI)
     Main.BackgroundColor3 = Theme.Background
     Main.Position = UDim2.new(0.5, -200, 0.5, -140)
     Main.Size = UDim2.new(0, 400, 0, 280)
-    Main.ClipsDescendants = true -- Crucial for the Squeeze
+    Main.ClipsDescendants = true 
     Instance.new("UICorner", Main).CornerRadius = Theme.Rounding
     AddBorder(Main, 2.5)
 
-    -- TITLE FRAME
     local TitleFrame = Instance.new("Frame", Main)
     TitleFrame.Size = UDim2.new(1, -24, 0, 38)
     TitleFrame.Position = UDim2.new(0, 12, 0, 12)
@@ -43,14 +41,13 @@ function Library:CreateWindow(Settings)
     Title.TextSize = 18
     Title.TextXAlignment = "Left"
 
-    -- CONTENT CONTAINER (Everything under the title goes here)
+    -- CONTAINER (This is the frame under the title that disappears when minimized)
     local Content = Instance.new("Frame", Main)
     Content.Name = "Content"
     Content.Size = UDim2.new(1, 0, 1, -62)
     Content.Position = UDim2.new(0, 0, 0, 62)
     Content.BackgroundTransparency = 1
 
-    -- MINIMIZE / CLOSE
     local Close = Instance.new("TextButton", TitleFrame)
     Close.Size = UDim2.new(0, 24, 0, 24); Close.Position = UDim2.new(1, -32, 0.5, -12)
     Close.BackgroundColor3 = Color3.fromRGB(60, 20, 20); Close.Text = "×"
@@ -59,61 +56,46 @@ function Library:CreateWindow(Settings)
 
     local Mini = Instance.new("TextButton", TitleFrame)
     Mini.Size = UDim2.new(0, 24, 0, 24); Mini.Position = UDim2.new(1, -62, 0.5, -12)
-    Mini.BackgroundColor3 = Color3.fromRGB(35, 35, 35); Mini.Text = "-"
-    Mini.TextColor3 = Theme.TextColor; Instance.new("UICorner", Mini).CornerRadius = UDim.new(0, 8)
-    AddBorder(Mini, 1.5)
+    Mini.BackgroundColor3 = Color3.fromRGB(35, 35, 35); Mini.Text = "-"; Mini.TextColor3 = Theme.TextColor
+    Instance.new("UICorner", Mini).CornerRadius = UDim.new(0, 8); AddBorder(Mini, 1.5)
 
-    -- SQUEEZE LOGIC
     local minimized = false
     Mini.MouseButton1Click:Connect(function()
         minimized = not minimized
-        -- Hide content instantly so it doesn't "poke out" during the slide
-        if minimized then Content.Visible = false end
-        
-        local tween = game:GetService("TweenService"):Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+        Content.Visible = not minimized
+        game:GetService("TweenService"):Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quart), {
             Size = minimized and UDim2.new(0, 400, 0, 62) or UDim2.new(0, 400, 0, 280)
-        })
-        tween:Play()
-        
-        tween.Completed:Connect(function()
-            if not minimized then Content.Visible = true end
-        end)
+        }):Play()
     end)
     Close.MouseButton1Click:Connect(function() InternalUI:Destroy() end)
 
-    -- SEARCH BAR
     local Search = Instance.new("TextBox", Content)
     Search.Size = UDim2.new(1, -24, 0, 28); Search.Position = UDim2.new(0, 12, 0, 0)
-    Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "Search..."
-    Search.TextColor3 = Color3.fromRGB(255, 255, 255); Search.Font = Theme.TextFont; Search.TextSize = 14
+    Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "Search Settings..."
+    Search.Text = ""; Search.TextColor3 = Theme.TextColor; Search.Font = Theme.TextFont; Search.TextSize = 14
     Instance.new("UICorner", Search).CornerRadius = UDim.new(0, 8); AddBorder(Search, 1.2)
 
-    -- TAB LIST (Fixed Invisible Issue)
     local TabList = Instance.new("ScrollingFrame", Content)
-    TabList.Position = UDim2.new(0, 12, 0, 36)
-    TabList.Size = UDim2.new(1, -24, 0, 38)
-    TabList.BackgroundTransparency = 1
-    TabList.ScrollBarThickness = 0
-    TabList.CanvasSize = UDim2.new(0, 0, 0, 0) -- Starts at 0, we update it manually
+    TabList.Position = UDim2.new(0, 12, 0, 36); TabList.Size = UDim2.new(1, -24, 0, 32)
+    TabList.BackgroundTransparency = 1; TabList.ScrollBarThickness = 0
+    TabList.CanvasSize = UDim2.new(0, 0, 0, 0) -- Fixed: Updated via code below
     
     local layout = Instance.new("UIListLayout", TabList)
-    layout.FillDirection = "Horizontal"
-    layout.Padding = UDim.new(0, 10)
-    layout.VerticalAlignment = "Center"
+    layout.FillDirection = "Horizontal"; layout.Padding = UDim.new(0, 10); layout.VerticalAlignment = "Center"
 
-    -- Manual Canvas Size Updater
+    -- Tab Visibility Fix
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        TabList.CanvasSize = UDim2.new(0, layout.AbsoluteContentSize.X + 10, 0, 0)
+        TabList.CanvasSize = UDim2.new(0, layout.AbsoluteContentSize.X + 15, 0, 0)
     end)
 
     local ElementsArea = Instance.new("Frame", Content)
-    ElementsArea.Position = UDim2.new(0, 12, 0, 80); ElementsArea.Size = UDim2.new(1, -24, 1, -110)
+    ElementsArea.Position = UDim2.new(0, 12, 0, 75); ElementsArea.Size = UDim2.new(1, -24, 1, -100)
     ElementsArea.BackgroundTransparency = 1
 
     local Window = {}
     function Window:CreateTab(Name)
         local TabBtn = Instance.new("TextButton", TabList)
-        TabBtn.Size = UDim2.new(0, 100, 0, 28)
+        TabBtn.Size = UDim2.new(0, 100, 0, 26)
         TabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabBtn.Text = Name; TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150); TabBtn.Font = Theme.TextFont; TabBtn.TextSize = 14
         Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8); AddBorder(TabBtn, 1.2)
