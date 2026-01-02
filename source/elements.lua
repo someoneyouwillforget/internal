@@ -7,6 +7,7 @@ function Elements.CreateButton(TabPage, BData)
     Button.Title.Text = BData.Name
     Button.Visible = true
     Button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    
     Button.MouseButton1Click:Connect(function()
         pcall(BData.Callback)
     end)
@@ -21,7 +22,7 @@ function Elements.CreateToggle(TabPage, TData, Theme)
     Toggle.Visible = true
     
     local function Update()
-        local Color = Toggled and Theme.Accent or Color3.fromRGB(40, 40, 40)
+        local Color = Toggled and Theme.Accent or Color3.fromRGB(45, 45, 45)
         TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.2), {BackgroundColor3 = Color}):Play()
         pcall(TData.Callback, Toggled)
     end
