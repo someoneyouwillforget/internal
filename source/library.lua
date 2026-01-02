@@ -1,8 +1,9 @@
 local Library = {}
-local Theme = loadstring(game:HttpGet("https://raw.githubusercontent.com/someoneyouwillforget/internal/main/source/Theme.lua"))().Default
-local ElementsAPI = loadstring(game:HttpGet("https://raw.githubusercontent.com/someoneyouwillforget/internal/main/source/Elements.lua"))()
+local Theme = loadstring(game:HttpGet("https://raw.githubusercontent.com/someoneyouwillforget/internal/main/source/theme.lua"))().Default
+local ElementsAPI = loadstring(game:HttpGet("https://raw.githubusercontent.com/someoneyouwillforget/internal/main/source/elements.lua"))()
 
 function Library:CreateWindow(Settings)
+    -- Load the physical UI from Roblox
     local InternalUI = game:GetObjects("rbxassetid://10804731440")[1]
     InternalUI.Name = "InternalSuite"
     InternalUI.Parent = (gethui and gethui()) or game:GetService("CoreGui")
@@ -11,7 +12,6 @@ function Library:CreateWindow(Settings)
     Main.BackgroundColor3 = Theme.Background
     Main.Topbar.BackgroundColor3 = Theme.Topbar
     Main.Topbar.Title.Text = Settings.Name or "INTERNAL"
-    Main.Topbar.Title.TextColor3 = Theme.TextColor
     
     InternalUI.Enabled = true
     
