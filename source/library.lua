@@ -7,112 +7,70 @@ function Library:CreateWindow(Settings)
     
     local Main = Instance.new("Frame", InternalUI)
     Main.BackgroundColor3 = Theme.Background
-    Main.Position = UDim2.new(0.5, -200, 0.5, -140)
     Main.Size = UDim2.new(0, 400, 0, 280)
-    Main.ClipsDescendants = true 
-    Instance.new("UICorner", Main).CornerRadius = Theme.Rounding
+    Main.Position = UDim2.new(0.5, -200, 0.5, -140)
+    
     local MainStroke = Instance.new("UIStroke", Main)
-    MainStroke.Color = Theme.BorderColor; MainStroke.Thickness = 2.5
+    MainStroke.Color = Theme.BorderColor
+    MainStroke.Thickness = 2
     MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
 
-    -- Dragging
-    local dragging, dragInput, dragStart, startPos
-    Main.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true; dragStart = input.Position; startPos = Main.Position
-            input.Changed:Connect(function() if input.UserInputState == Enum.UserInputState.End then dragging = false end end)
-        end
-    end)
-    Main.InputChanged:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end end)
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - dragStart
-            Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-    end)
-
-    local TitleFrame = Instance.new("Frame", Main)
-    TitleFrame.Size = UDim2.new(1, -24, 0, 38); TitleFrame.Position = UDim2.new(0, 12, 0, 12)
-    TitleFrame.BackgroundColor3 = Theme.Topbar
-    Instance.new("UICorner", TitleFrame).CornerRadius = UDim.new(0, 12)
-    local tStroke = Instance.new("UIStroke", TitleFrame)
-    tStroke.Color = Theme.BorderColor; tStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-
-    local Content = Instance.new("Frame", Main)
-    Content.Size = UDim2.new(1, 0, 1, -62); Content.Position = UDim2.new(0, 0, 0, 62); Content.BackgroundTransparency = 1
-
-    -- SEARCH BAR (With Border)
-    local Search = Instance.new("TextBox", Content)
-    Search.Size = UDim2.new(1, -24, 0, 28); Search.Position = UDim2.new(0, 12, 0, 0)
-    Search.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Search.PlaceholderText = "Search..."
-    Search.Text = ""; Search.TextColor3 = Theme.TextColor; Search.Font = Enum.Font.SourceSansBold; Search.TextSize = 14
-    Search.TextStrokeTransparency = 1
-    Instance.new("UICorner", Search).CornerRadius = UDim.new(0, 8)
-    local sStroke = Instance.new("UIStroke", Search)
-    sStroke.Color = Theme.BorderColor; sStroke.Thickness = 1.5; sStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-
-    -- THE TAB LIST (Where the "Border Tabs" live)
-    local TabList = Instance.new("Frame", Content)
-    TabList.Position = UDim2.new(0, 12, 0, 35) -- Moved down slightly
-    TabList.Size = UDim2.new(1, -24, 0, 35)
+    local TabList = Instance.new("Frame", Main)
+    TabList.Size = UDim2.new(1, -20, 0, 35)
+    TabList.Position = UDim2.new(0, 10, 0, 15)
     TabList.BackgroundTransparency = 1
 
-    local layout = Instance.new("UIListLayout", TabList)
-    layout.FillDirection = Enum.FillDirection.Horizontal
-    layout.Padding = UDim.new(0, 8)
-    layout.VerticalAlignment = Enum.VerticalAlignment.Center
-    layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    local Layout = Instance.new("UIListLayout", TabList)
+    Layout.FillDirection = "Horizontal"
+    Layout.Padding = UDim.new(0, 8)
+    Layout.HorizontalAlignment = "Center"
 
-    local ElementsArea = Instance.new("Frame", Content)
-    ElementsArea.Position = UDim2.new(0, 12, 0, 80); ElementsArea.Size = UDim2.new(1, -24, 1, -100); ElementsArea.BackgroundTransparency = 1
+    local ElementsArea = Instance.new("Frame", Main)
+    ElementsArea.Size = UDim2.new(1, -20, 1, -80)
+    ElementsArea.Position = UDim2.new(0, 10, 0, 70)
+    ElementsArea.BackgroundTransparency = 1
 
     local Window = {}
     function Window:CreateTab(Name)
-        -- THE BORDER TAB BUTTON
         local TabBtn = Instance.new("TextButton", TabList)
-        TabBtn.Size = UDim2.new(0, 90, 0, 28) -- Forced size
+        TabBtn.Size = UDim2.new(0, 95, 0, 28)
         TabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         TabBtn.Text = Name
-        TabBtn.TextColor3 = Color3.fromRGB(180, 180, 180)
-        TabBtn.Font = Enum.Font.SourceSansBold
+        TabBtn.Font = Theme.Font
+        TabBtn.TextColor3 = Theme.TextColor
         TabBtn.TextSize = 14
         TabBtn.TextStrokeTransparency = 1
-        Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 6)
         
-        -- TAB BORDER (Box Only)
-        local tBtnStroke = Instance.new("UIStroke", TabBtn)
-        tBtnStroke.Color = Theme.BorderColor
-        tBtnStroke.Thickness = 1.5
-        tBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        local tStroke = Instance.new("UIStroke", TabBtn)
+        tStroke.Color = Theme.BorderColor
+        tStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 6)
 
         local TabPage = Instance.new("ScrollingFrame", ElementsArea)
-        TabPage.Size = UDim2.new(1, 0, 1, 0); TabPage.BackgroundTransparency = 1; TabPage.Visible = false; TabPage.ScrollBarThickness = 0
-        local elayout = Instance.new("UIListLayout", TabPage); elayout.Padding = UDim.new(0, 8); elayout.HorizontalAlignment = "Center"
+        TabPage.Size = UDim2.new(1, 0, 1, 0)
+        TabPage.BackgroundTransparency = 1
+        TabPage.Visible = false
+        TabPage.ScrollBarThickness = 0
+
+        -- FIXES THE CUT OFF TOP
+        local Padding = Instance.new("UIPadding", TabPage)
+        Padding.PaddingTop = UDim.new(0, 8)
+        Padding.PaddingLeft = UDim.new(0, 2)
+        Padding.PaddingRight = UDim.new(0, 2)
+
+        local eLayout = Instance.new("UIListLayout", TabPage)
+        eLayout.Padding = UDim.new(0, 8)
+        eLayout.HorizontalAlignment = "Center"
 
         TabBtn.MouseButton1Click:Connect(function()
             for _, v in pairs(ElementsArea:GetChildren()) do if v:IsA("ScrollingFrame") then v.Visible = false end end
             TabPage.Visible = true
-            for _, b in pairs(TabList:GetChildren()) do 
-                if b:IsA("TextButton") then 
-                    b.TextColor3 = Color3.fromRGB(180, 180, 180) 
-                    b:FindFirstChildWhichIsA("UIStroke").Thickness = 1.5
-                end 
-            end
-            TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            tBtnStroke.Thickness = 2.5 -- Make active tab border thicker
         end)
-        
-        -- Default to first tab
-        if #TabList:GetChildren() == 2 then -- 1 for layout, 1 for first button
-            TabPage.Visible = true
-            TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        end
 
         return {
-            CreateButton = function(_, D) return ElementsAPI.CreateButton(TabPage, D, Theme) end,
-            CreateToggle = function(_, D) return ElementsAPI.CreateToggle(TabPage, D, Theme) end,
-            CreateSlider = function(_, D) return ElementsAPI.CreateSlider(TabPage, D, Theme) end,
-            CreateDropdown = function(_, D) return ElementsAPI.CreateDropdown(TabPage, D, Theme) end
+            CreateHeader = function(_, D) return ElementsAPI.CreateHeader(TabPage, D, Theme) end,
+            CreateButton = function(_, D) return ElementsAPI.CreateButton(TabPage, D, Theme) end
         }
     end
     return Window
