@@ -1,92 +1,55 @@
--- [[ INTERNAL PROJECT - OFFICIAL TEST SCRIPT ]] --
--- This script builds the UI structure with your requested tabs.
-
+-- [[ INTERNAL PROJECT ]] --
 local Internal = loadstring(game:HttpGet("https://raw.githubusercontent.com/someoneyouwillforget/internal/main/source/main.lua"))()
 
 local Win = Internal:CreateWindow({
     Name = "INTERNAL PROJECT"
 })
 
--- Tab 1
+-- TAB 1: CREDITS (Flat text, no stroke)
 local Credits = Win:CreateTab("Credits")
-
 Credits:CreateButton({
-    Name = "Developer: @someoneyouwillforget",
-    Callback = function()
-        setclipboard("someoneyouwillforget")
-        print("GitHub username copied to clipboard!")
-    end
+    Name = "Discord Server (Copy Link)",
+    Callback = function() setclipboard("discord.gg/yourserver") end
+})
+Credits:CreateButton({
+    Name = "GitHub: @someoneyouwillforget",
+    Callback = function() setclipboard("someoneyouwillforget") end
 })
 
-Credits:CreateButton({
-    Name = "Discord: Click to Copy Link",
-    Callback = function()
-        setclipboard("discord.gg/yourlink")
-        print("Discord invite copied!")
-    end
-})
-
--- Tab 2
+-- TAB 2: INFO
 local Info = Win:CreateTab("Info")
-
 Info:CreateButton({
-    Name = "Open Source Repo (Copy)",
-    Callback = function()
-        setclipboard("https://github.com/someoneyouwillforget/internal")
-        print("Source link copied!")
-    end
+    Name = "GitHub Open Source Link",
+    Callback = function() setclipboard("https://github.com/someoneyouwillforget/internal") end
+})
+Info:CreateButton({
+    Name = "Join Support Discord",
+    Callback = function() setclipboard("discord.gg/yourserver") end
 })
 
-Info:CreateButton({
-    Name = "Version: v1.0.0 Alpha",
-    Callback = function()
-        print("Running latest build.")
-    end
-})
-
--- Tab 3
+-- TAB 3: VISUALS (UI Controls & "Shiy")
 local Visuals = Win:CreateTab("Visuals")
 
--- Header for UI Toggles
-Visuals:CreateButton({
-    Name = "--- MENU SETTINGS ---",
-    Callback = function() end
-})
-
 Visuals:CreateToggle({
-    Name = "Rainbow Border Tabs",
+    Name = "Menu Rainbow Border",
     CurrentValue = false,
-    Callback = function(state)
-        print("Rainbow Borders:", state)
-    end
+    Callback = function(v) print("Rainbow:", v) end
 })
 
 Visuals:CreateSlider({
-    Name = "UI Transparency",
-    Min = 0,
-    Max = 100,
-    Default = 0,
-    Callback = function(val)
-        print("Transparency:", val)
-    end
+    Name = "Menu Transparency",
+    Min = 0, Max = 100, Default = 0,
+    Callback = function(v) print("Transparency:", v) end
 })
 
 Visuals:CreateToggle({
     Name = "Show Search Bar",
     CurrentValue = true,
-    Callback = function(state)
-        print("Search Bar Visibility:", state)
-    end
+    Callback = function(v) print("Search Bar:", v) end
 })
 
 Visuals:CreateSlider({
     Name = "Tab Border Thickness",
-    Min = 1,
-    Max = 5,
-    Default = 2,
-    Callback = function(val)
-        print("Border Thickness set to:", val)
-    end
+    Min = 1, Max = 5, Default = 2,
+    Callback = function(v) print("Thickness:", v) end
 })
-
-print("Internal Test Script Loaded Successfully.")
