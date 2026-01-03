@@ -2,8 +2,8 @@ local Elements = {}
 
 function Elements.CreateHeader(TabPage, HData, Theme)
     local Header = Instance.new("Frame", TabPage)
-    Header.Size = UDim2.new(1, 0, 0, 20) -- Thinner header
-    Header.BackgroundTransparency = 1 -- Back to plain style if that's what you had
+    Header.Size = UDim2.new(1, 0, 0, 22)
+    Header.BackgroundTransparency = 1
     
     local Title = Instance.new("TextLabel", Header)
     Title.Size = UDim2.new(1, 0, 1, 0)
@@ -17,7 +17,7 @@ end
 
 function Elements.CreateButton(TabPage, BData, Theme)
     local Button = Instance.new("TextButton", TabPage)
-    Button.Size = UDim2.new(1, 0, 0, 30)
+    Button.Size = UDim2.new(1, -2, 0, 30)
     Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Button.Text = BData.Name
     Button.Font = Theme.Font
@@ -27,7 +27,12 @@ function Elements.CreateButton(TabPage, BData, Theme)
     
     local bStroke = Instance.new("UIStroke", Button)
     bStroke.Color = Theme.BorderColor
+    bStroke.Thickness = 1.2
     bStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    
+    Button.MouseButton1Click:Connect(function()
+        pcall(BData.Callback)
+    end)
 end
 
 return Elements
