@@ -1,37 +1,30 @@
+-- Load the library from your Main file
 local Internal = loadstring(game:HttpGet("https://raw.githubusercontent.com/someoneyouwillforget/internal/main/source/main.lua"))()
 
-local Win = Internal:CreateWindow({ Name = "INTERNAL PROJECT" })
+-- Create the window
+local Win = Internal:CreateWindow()
 
--- CREDITS
+-- 1. CREDITS
 local Credits = Win:CreateTab("Credits")
+Credits:CreateHeader({Name = "CREATORS"})
 Credits:CreateButton({
-    Name = "Discord: Click to Copy",
+    Name = "Discord: Copy Link", 
     Callback = function() setclipboard("discord.gg/yourlink") end
 })
 Credits:CreateButton({
-    Name = "GitHub: @someoneyouwillforget",
+    Name = "GitHub: @someoneyouwillforget", 
     Callback = function() setclipboard("someoneyouwillforget") end
 })
 
--- INFO
+-- 2. INFO
 local Info = Win:CreateTab("Info")
-Info:CreateButton({ Name = "Source Code (GitHub)", Callback = function() setclipboard("https://github.com/someoneyouwillforget/internal") end })
+Info:CreateHeader({Name = "PROJECT INFO"})
+Info:CreateButton({
+    Name = "Copy Source Link", 
+    Callback = function() setclipboard("https://github.com/someoneyouwillforget/internal") end
+})
 
--- VISUALS (With Headers)
+-- 3. VISUALS
 local Visuals = Win:CreateTab("Visuals")
-
-Visuals:CreateHeader({ Name = "UI SETTINGS" }) -- NEW HEADER WITH BORDER
-
-Visuals:CreateToggle({
-    Name = "Rainbow Borders",
-    CurrentValue = false,
-    Callback = function(v) end
-})
-
-Visuals:CreateHeader({ Name = "MENU CUSTOMIZATION" }) -- NEW HEADER WITH BORDER
-
-Visuals:CreateSlider({
-    Name = "Transparency",
-    Min = 0, Max = 100, Default = 0,
-    Callback = function(v) end
-})
+Visuals:CreateHeader({Name = "UI SETTINGS"})
+-- (You can add Toggles and Sliders here later)
